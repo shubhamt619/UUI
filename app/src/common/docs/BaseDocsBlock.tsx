@@ -8,7 +8,7 @@ import { analyticsEvents } from '../../analyticsEvents';
 import css from './BaseDocsBlock.module.scss';
 import { TDocsGenExportedType } from '../apiReference/types';
 import { ApiRefTypeProps } from '../apiReference/ApiRefTypeProps';
-import { TDocConfig, TSkin } from './docBuilderGen/types';
+import { convertToGenericFormat, TDocConfig, TSkin } from './docBuilderGen/types';
 import { ComponentEditorWrapper } from './componentEditor/ComponentEditorWrapper';
 
 export { TSkin };
@@ -54,8 +54,11 @@ export abstract class BaseDocsBlock extends React.Component<any, BaseDocsBlockSt
 
     config: TDocConfig;
 
-    renderApiBlock() {
-        const docsGenType = this.getDocsGenType();
+    renderApiBlock = () => {
+        let docsGenType = this.getDocsGenType();
+        if (!docsGenType) {
+            docsGenType = convertToGenericFormat(this.config).bySkin[TSkin.UUI]?.type;
+        }
         if (docsGenType) {
             return (
                 <>
@@ -66,7 +69,7 @@ export abstract class BaseDocsBlock extends React.Component<any, BaseDocsBlockSt
                 </>
             );
         }
-    }
+    };
 
     renderMultiSwitch() {
         return (
