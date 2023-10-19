@@ -4,6 +4,7 @@ import type {
     TTypeValue,
     TTypeRef,
 } from './sharedTypes';
+import { TPropEditor } from './sharedTypes';
 
 type TExportName = string;
 type TModuleName = string;
@@ -15,6 +16,7 @@ export interface IConverter {
     isSupported(convertable: TConvertable): boolean;
     convert(params: { convertable: TConvertable }): TTypeConverted
     convertToTypeValue(params: { convertable: TConvertable, isProperty: boolean }): TTypeValue
+    convertPropEditor(params: { convertable: TConvertable }): TPropEditor | undefined
 }
 export interface IConverterContext {
     stats: IDocGenStats
@@ -34,6 +36,12 @@ export interface IConverterContext {
      * Convert summary of type node
      */
     convertTypeSummary(params: { convertable: TConvertable }): TTypeSummary
+
+    /**
+     * Builds editor property (applicable for props only)
+     * @param params
+     */
+    convertPropEditor(params: { convertable: TConvertable }): TPropEditor | undefined;
 
     getResults(): TApiReferenceJson
 }

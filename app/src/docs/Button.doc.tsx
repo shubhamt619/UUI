@@ -1,12 +1,23 @@
 import * as React from 'react';
-import {
-    EditableDocContent, DocExample, BaseDocsBlock, TDocsGenType, TSkin,
-} from '../common';
+import { BaseDocsBlock, DocExample, EditableDocContent, TSkin } from '../common';
+import * as uui from '@epam/uui';
+import { TDocConfig } from '../common/docs/docBuilderGen/types';
+import { DocBuilder } from '@epam/uui-docs';
 
 export class ButtonDoc extends BaseDocsBlock {
     title = 'Button';
 
-    override getDocsGenType = (): TDocsGenType => ('@epam/uui:ButtonProps');
+    override config: TDocConfig = {
+        name: 'Button',
+        type: '@epam/uui:ButtonProps',
+        component: uui.Button,
+        doc: (doc: DocBuilder<uui.ButtonProps>) => {
+            doc
+                .propMerge('size', { defaultValue: '36' })
+                .propMerge('mode', { defaultValue: 'solid' })
+                .propMerge('iconPosition', { defaultValue: 'left' });
+        },
+    };
 
     getPropsDocPath() {
         return {

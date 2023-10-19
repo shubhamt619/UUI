@@ -19,7 +19,7 @@ export interface DemoContext {
     name: string;
 }
 
-export interface PropSamplesCreationContext<TProps = {}> {
+export interface IPropSamplesCreationContext<TProps = {}> {
     getCallback(name: string): () => void;
     getChangeHandler(name: string): (newValue: any) => void;
     getSelectedProps(): TProps;
@@ -42,9 +42,9 @@ export interface PropDoc<TProps, TProp extends keyof TProps> {
     description?: string;
     isRequired: boolean;
     defaultValue?: TProps[TProp];
-    examples?: PropExample<TProps[TProp]>[] | ((ctx: PropSamplesCreationContext<TProps>) => PropExample<TProps[TProp]>[]);
+    examples?: PropExample<TProps[TProp]>[] | ((ctx: IPropSamplesCreationContext<TProps>) => PropExample<TProps[TProp]>[]);
     type?: 'string' | 'number';
-    renderEditor?: (editable: IEditable<TProp>, examples?: TProps[TProp][], componentProps?: TProps) => React.ReactNode;
+    renderEditor?: (editable: IEditable<TProp>, examples?: TProps[TProp][]) => React.ReactNode;
     color?: string;
     remountOnChange?: boolean;
 }

@@ -2,6 +2,7 @@ import type { ComponentType } from 'react';
 import type {
     IComponentDocs, DemoComponentProps, DemoContext, PropExample, PropDoc,
 } from './types';
+import { devLogger } from '@epam/uui-core';
 
 export class DocBuilder<TProps> implements IComponentDocs<TProps> {
     name: string;
@@ -15,18 +16,48 @@ export class DocBuilder<TProps> implements IComponentDocs<TProps> {
         this.component = docs.component || null;
     }
 
-    public prop<TProp extends keyof TProps>(name: TProp, details?: Partial<PropDoc<TProps, TProp>>) {
-        // Apply defaults
-        details.isRequired = details.isRequired || false;
-        details.examples = details.examples || [];
+    public prop<TProp extends keyof TProps>(name: TProp, details: Partial<PropDoc<TProps, TProp>>) {
+        return this._prop<TProp>(name, details);
+    }
 
-        if (typeof details.examples === 'function') {
-            const originalExamples = details.examples;
-            details.examples = (ctx) => this.normalizeExamples(originalExamples(ctx));
-        } else {
-            details.examples = this.normalizeExamples(details.examples);
+    public propMerge<TProp extends keyof TProps>(name: TProp, details: Partial<PropDoc<TProps, TProp>>) {
+        return this._prop<TProp>(name, details, 'merge');
+    }
+
+    private _prop<TProp extends keyof TProps>(name: TProp, details: Partial<PropDoc<TProps, TProp>>, mode?: 'merge') {
+        const index = this.props.findIndex((p) => p.name === name as keyof TProps);
+        const exists = index !== -1;
+
+        // Apply defaults
+        if (mode !== 'merge') {
+            details.isRequired = details.isRequired || false;
+            details.examples = details.examples || [];
         }
-        this.props.push({ name, ...details } as any);
+
+        if (details.examples) {
+            if (typeof details.examples === 'function') {
+                const originalExamples = details.examples;
+                details.examples = (ctx) => this.normalizeExamples(originalExamples(ctx));
+            } else {
+                details.examples = this.normalizeExamples(details.examples);
+            }
+        }
+
+        if (exists) {
+            const prev = this.props[index];
+            const res = {
+                name,
+                ...prev,
+                ...details,
+            } as any;
+            if (mode !== 'merge') {
+                devLogger.warn(`[DocBuilder] Existing property will be replaced ${String(name)}`, prev, res);
+            }
+            this.props[index] = res;
+        } else {
+            this.props.push({ name, ...details } as any);
+        }
+
         return this;
     }
 
@@ -43,8 +74,8 @@ export class DocBuilder<TProps> implements IComponentDocs<TProps> {
         return this;
     }
 
-    private normalizeExamples(examples: PropExample<any>[]) {
-        return examples.map((example, index) => {
+    private normalizeExamples(examples?: PropExample<any>[]) {
+        return examples?.map((example, index) => {
             if (example == null || typeof example === 'number' || typeof example === 'string' || typeof example === 'boolean' || typeof example === 'function') {
                 example = {
                     value: example,

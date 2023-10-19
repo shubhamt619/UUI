@@ -1,8 +1,8 @@
 {
  "missingPropComment": {
   "totals": {
-   "amountProps": 915,
-   "amountTypes": 293
+   "amountProps": 911,
+   "amountTypes": 292
   },
   "value": [
    {
@@ -317,7 +317,6 @@
      "isNotUnfoldable",
      "modifiers",
      "onClose",
-     "openOnClick",
      "openOnHover",
      "placement",
      "portalTarget",
@@ -935,14 +934,6 @@
     ]
    },
    {
-    "typeRef": "@epam/uui-core:ScrollToConfig",
-    "value": [
-     "align",
-     "behavior",
-     "index"
-    ]
-   },
-   {
     "typeRef": "@epam/uui-core:SearchResultItem",
     "value": [
      "parents"
@@ -1209,7 +1200,8 @@
     "value": [
      "editMode",
      "listView",
-     "rows"
+     "rows",
+     "searchPosition"
     ]
    },
    {
@@ -1514,7 +1506,6 @@
    {
     "typeRef": "@epam/uui-components:ScrollbarProps",
     "value": [
-     "disableScroll",
      "hasBottomShadow",
      "hasTopShadow",
      "renderView"
@@ -1586,15 +1577,6 @@
     "value": [
      "shouldShowBody",
      "toggleModalOpening"
-    ]
-   },
-   {
-    "typeRef": "@epam/uui-components:VirtualListRenderRowsParams",
-    "value": [
-     "estimatedHeight",
-     "listContainerRef",
-     "offsetY",
-     "scrollShadows"
     ]
    },
    {
@@ -2046,6 +2028,15 @@
     ]
    },
    {
+    "typeRef": "@epam/uui:VirtualListRenderRowsParams",
+    "value": [
+     "estimatedHeight",
+     "listContainerRef",
+     "offsetY",
+     "scrollShadows"
+    ]
+   },
+   {
     "typeRef": "@epam/promo:AlertMods",
     "value": [
      "color"
@@ -2389,7 +2380,7 @@
  },
  "missingTypeComment": {
   "totals": {
-   "amountTypes": 469
+   "amountTypes": 464
   },
   "value": [
    "@epam/uui-core:AcceptDropParams",
@@ -2417,7 +2408,6 @@
    "@epam/uui-core:ButtonSemanticProps",
    "@epam/uui-core:CascadeSelection",
    "@epam/uui-core:CheckboxCoreProps",
-   "@epam/uui-core:ClassValue",
    "@epam/uui-core:ColumnsConfig",
    "@epam/uui-core:CommonContexts",
    "@epam/uui-core:ContextProviderProps",
@@ -2447,7 +2437,6 @@
    "@epam/uui-core:DropdownProps",
    "@epam/uui-core:DropdownState",
    "@epam/uui-core:DropParams",
-   "@epam/uui-core:DropPosition",
    "@epam/uui-core:FileUploadOptions",
    "@epam/uui-core:FileUploadResponse",
    "@epam/uui-core:FilterPredicate",
@@ -2520,7 +2509,6 @@
    "@epam/uui-core:RenderCellProps",
    "@epam/uui-core:RenderEditorProps",
    "@epam/uui-core:ScrollAlign",
-   "@epam/uui-core:ScrollToConfig",
    "@epam/uui-core:SearchResultItem",
    "@epam/uui-core:SkinContextComponentProps",
    "@epam/uui-core:SortDirection",
@@ -2627,9 +2615,6 @@
    "@epam/uui-components:UsePickerInputProps",
    "@epam/uui-components:UsePickerListProps",
    "@epam/uui-components:UsePickerModalProps",
-   "@epam/uui-components:ViewType",
-   "@epam/uui-components:VirtualListProps",
-   "@epam/uui-components:VirtualListRenderRowsParams",
    "@epam/uui-components:YearSelectionProps",
    "@epam/uui:AccordionMods",
    "@epam/uui:AccordionProps",
@@ -2750,6 +2735,7 @@
    "@epam/uui:TooltipProps",
    "@epam/uui:UuiMultiSwitchColor",
    "@epam/uui:VerticalTabButtonProps",
+   "@epam/uui:VirtualListProps",
    "@epam/promo:AlertMods",
    "@epam/promo:AlertProps",
    "@epam/promo:BadgeMods",
@@ -2865,10 +2851,10 @@
  },
  "ignoredExports": {
   "totals": {
-   "allExports": 714,
+   "allExports": 713,
    "byModule": {
     "@epam/uui-core": 132,
-    "@epam/uui-components": 106,
+    "@epam/uui-components": 105,
     "@epam/uui": 148,
     "@epam/promo": 127,
     "@epam/loveship": 139,
@@ -3128,8 +3114,7 @@
      "uuiSlider",
      "uuiTimePicker",
      "uuiYearSelection",
-     "valueFormat",
-     "VirtualList"
+     "valueFormat"
     ]
    },
    "@epam/uui": {
@@ -3649,8 +3634,8 @@
    "allExports": 540,
    "byModule": {
     "@epam/uui-core": 208,
-    "@epam/uui-components": 93,
-    "@epam/uui": 125,
+    "@epam/uui-components": 91,
+    "@epam/uui": 127,
     "@epam/promo": 48,
     "@epam/loveship": 57,
     "@epam/uui-editor": 9
@@ -3888,8 +3873,7 @@
      "UsePickerInputProps",
      "UsePickerListProps",
      "UsePickerModalProps",
-     "ViewType",
-     "VirtualListProps"
+     "ViewType"
     ],
     "InterfaceDeclaration": [
      "AccordionState",
@@ -3966,7 +3950,6 @@
      "TooltipState",
      "TreeListItem",
      "TreeProps",
-     "VirtualListRenderRowsParams",
      "YearSelectionProps"
     ]
    },
@@ -4050,7 +4033,8 @@
      "TextMods",
      "TextSettings",
      "TimePickerProps",
-     "TooltipMods"
+     "TooltipMods",
+     "VirtualListRenderRowsParams"
     ],
     "TypeAliasDeclaration": [
      "AccordionProps",
@@ -4098,7 +4082,8 @@
      "TextSize",
      "TooltipProps",
      "UuiMultiSwitchColor",
-     "VerticalTabButtonProps"
+     "VerticalTabButtonProps",
+     "VirtualListProps"
     ]
    },
    "@epam/promo": {

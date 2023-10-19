@@ -1,12 +1,89 @@
 import * as React from 'react';
 import {
-    EditableDocContent, DocExample, BaseDocsBlock, UUI3, UUI4, TDocsGenType,
+    EditableDocContent, DocExample, BaseDocsBlock, UUI3, UUI4, TSkin,
 } from '../common';
+import { TDocConfig } from '../common/docs/docBuilderGen/types';
+import { Dropdown } from '@epam/uui-components';
+import { DropdownProps } from '@epam/uui-core';
+import * as loveship from '@epam/loveship';
+import { DocBuilder } from '@epam/uui-docs';
+import * as promo from '@epam/promo';
 
 export class DropdownDoc extends BaseDocsBlock {
     title = 'Dropdown';
 
-    override getDocsGenType = (): TDocsGenType => ('@epam/uui-core:DropdownProps');
+    override config: TDocConfig = {
+        name: 'Dropdown',
+        bySkin: {
+            [TSkin.UUI3_loveship]: {
+                type: '@epam/uui-core:DropdownProps',
+                component: Dropdown,
+                doc: (db: DocBuilder<DropdownProps>) => {
+                    db.prop('renderBody', {
+                        isRequired: true,
+                        examples: [
+                            {
+                                value: (props) => (
+                                    <loveship.DropdownMenuBody { ...props }>
+                                        <loveship.DropdownMenuHeader caption="Tools" />
+                                        <loveship.DropdownMenuButton caption="Button111" />
+                                        <loveship.DropdownMenuButton caption="Button2" />
+                                        <loveship.DropdownMenuButton caption="Button3232" />
+                                        <loveship.DropdownMenuSplitter />
+                                        <loveship.DropdownMenuButton caption="Button2" />
+                                        <loveship.DropdownMenuButton caption="Button323442" />
+                                    </loveship.DropdownMenuBody>
+                                ),
+                                isDefault: true,
+                            },
+                        ],
+                    })
+                        .prop('renderTarget', {
+                            isRequired: true,
+                            examples: [
+                                {
+                                    value: (props) => <loveship.Button caption="Target" { ...props } />,
+                                    isDefault: true,
+                                },
+                            ],
+                        });
+                },
+            },
+            [TSkin.UUI4_promo]: {
+                type: '@epam/uui-core:DropdownProps',
+                component: Dropdown,
+                doc: (db: DocBuilder<DropdownProps>) => {
+                    db.prop('renderBody', {
+                        isRequired: true,
+                        examples: [
+                            {
+                                value: () => {
+                                    return (
+                                        <promo.Panel background="white" shadow={ true }>
+                                            <promo.FlexRow padding="12" vPadding="12">
+                                                <promo.Text>Dropdown body content. You can use any components as a dropdown body.</promo.Text>
+                                            </promo.FlexRow>
+                                        </promo.Panel>
+                                    );
+                                },
+                                isDefault: true,
+                            },
+                        ],
+                    })
+                        .prop('renderTarget', {
+                            isRequired: true,
+                            examples: [
+                                {
+                                    value: (props) => <promo.Button caption="Target" { ...props } />,
+                                    isDefault: true,
+                                },
+                            ],
+                        });
+                },
+            },
+        },
+
+    };
 
     getPropsDocPath() {
         return {

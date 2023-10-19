@@ -25,5 +25,16 @@ export function resolveModuleName(absolutePath: string) {
     if (fs.existsSync(pkg)) {
         return JSON.parse(fs.readFileSync(pkg).toString()).name;
     }
+    return mapModuleName(rel);
+}
+function mapModuleName(rel: string): string {
+    const map: Record<string, string> = {
+        'node_modules/@types/react/index.d.ts': '@types/react',
+    };
+    const prefix = Object.keys(map).find((key) => rel.startsWith(key));
+    if (prefix) {
+        const suffix = rel.substring(prefix.length);
+        return `${map[prefix]}${suffix}`;
+    }
     return rel;
 }

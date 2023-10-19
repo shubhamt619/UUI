@@ -25,6 +25,9 @@ export interface DropdownProps extends Partial<IEditable<boolean>> {
 
     openDelay?: number; // default: 0
     closeDelay?: number; // default: 0
+    /**
+     * @default true
+     */
     openOnClick?: boolean; // default: true
     openOnHover?: boolean; // default: false
     closeOnTargetClick?: boolean; // default: true

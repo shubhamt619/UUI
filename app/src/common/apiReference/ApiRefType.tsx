@@ -15,10 +15,10 @@ export function ApiRefType() {
 
     const items: { title?: string, node: React.ReactNode }[] = [];
     const comment = docsGenType?.summary?.comment;
-    if (comment?.length) {
+    if (comment?.raw?.length) {
         items.push({
             title: 'Description',
-            node: <TsComment text={ comment } keepBreaks={ true } />,
+            node: <TsComment comment={ comment } keepBreaks={ true } />,
         });
     }
 

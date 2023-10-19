@@ -1,20 +1,18 @@
 import * as React from 'react';
 import {
-    Text, RichTextView, FlexRow, MultiSwitch, FlexSpacer, TabButton, LinkButton, ScrollBars,
+    RichTextView, FlexRow, MultiSwitch, FlexSpacer, TabButton, ScrollBars,
 } from '@epam/promo';
-import { ComponentEditor } from './ComponentEditor';
 import { svc } from '../../services';
 import { getQuery } from '../../helpers';
 import { analyticsEvents } from '../../analyticsEvents';
 import css from './BaseDocsBlock.module.scss';
 import { TDocsGenExportedType } from '../apiReference/types';
 import { ApiRefTypeProps } from '../apiReference/ApiRefTypeProps';
+import { TDocConfig, TSkin } from './docBuilderGen/types';
+import { ComponentEditorWrapper } from './componentEditor/ComponentEditorWrapper';
 
-export enum TSkin {
-    UUI3_loveship = 'UUI3_loveship',
-    UUI4_promo = 'UUI4_promo',
-    UUI = 'UUI'
-}
+export { TSkin };
+
 const DEFAULT_SKIN = TSkin.UUI4_promo;
 
 export const UUI3 = TSkin.UUI3_loveship;
@@ -54,6 +52,8 @@ export abstract class BaseDocsBlock extends React.Component<any, BaseDocsBlockSt
         return undefined;
     }
 
+    config: TDocConfig;
+
     renderApiBlock() {
         const docsGenType = this.getDocsGenType();
         if (docsGenType) {
@@ -90,9 +90,10 @@ export abstract class BaseDocsBlock extends React.Component<any, BaseDocsBlockSt
         );
     }
 
-    renderPropEditor() {
-        this.handleChangeBodyTheme(getQuery('skin'));
-        if (!this.getPropsDocPath()) {
+    assertPropEditorSupported = (): void => {
+        const hasOldPropsDocPath = !!this.getPropsDocPath();
+        const hasNewDocConfig = !!this.config;
+        if (!hasOldPropsDocPath && !hasNewDocConfig) {
             svc.uuiRouter.redirect({
                 pathname: '/documents',
                 query: {
@@ -104,13 +105,32 @@ export abstract class BaseDocsBlock extends React.Component<any, BaseDocsBlockSt
             });
             return null;
         }
+    };
+
+    renderPropsEditor() {
         const skin = getQuery('skin') as TSkin;
-        const propsDoc = this.getPropsDocPath()[skin];
-        if (!propsDoc) {
-            return this.renderNotSupportPropExplorer();
-        }
+        this.handleChangeBodyTheme(skin);
+        this.assertPropEditorSupported();
+
         return (
-            <ComponentEditor key={ propsDoc } propsDocPath={ propsDoc } title={ this.title } />
+            <ComponentEditorWrapper
+                onRedirectBackToDocs={ () => {
+                    svc.uuiRouter.redirect({
+                        pathname: '/documents',
+                        query: {
+                            category: 'components',
+                            id: getQuery('id'),
+                            mode: 'doc',
+                            skin,
+                        },
+                    });
+                } }
+                oldConfig={ this.getPropsDocPath() }
+                config={ this.config }
+                title={ this.title }
+                skin={ skin }
+                docsGenType={ this.getDocsGenType() }
+            />
         );
     }
 
@@ -139,31 +159,6 @@ export abstract class BaseDocsBlock extends React.Component<any, BaseDocsBlockSt
                     {this.renderApiBlock()}
                 </div>
             </ScrollBars>
-        );
-    }
-
-    renderNotSupportPropExplorer() {
-        return (
-            <div className={ css.notSupport }>
-                <Text fontSize="16" lineHeight="24">
-                    This component does not support property explorer
-                </Text>
-                <LinkButton
-                    size="24"
-                    cx={ css.backButton }
-                    caption="Back to Docs"
-                    onClick={ () =>
-                        svc.uuiRouter.redirect({
-                            pathname: '/documents',
-                            query: {
-                                category: 'components',
-                                id: getQuery('id'),
-                                mode: 'doc',
-                                skin: getQuery('skin'),
-                            },
-                        }) }
-                />
-            </div>
         );
     }
 
@@ -209,7 +204,7 @@ export abstract class BaseDocsBlock extends React.Component<any, BaseDocsBlockSt
         return (
             <div className={ css.container }>
                 {this.getPropsDocPath() && this.renderTabsNav()}
-                {getQuery('mode') === 'propsEditor' ? this.renderPropEditor() : this.renderDoc()}
+                {getQuery('mode') === 'propsEditor' ? this.renderPropsEditor() : this.renderDoc()}
             </div>
         );
     }

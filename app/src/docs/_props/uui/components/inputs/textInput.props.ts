@@ -1,4 +1,4 @@
-import { DocBuilder, PropSamplesCreationContext } from '@epam/uui-docs';
+import { DocBuilder, IPropSamplesCreationContext } from '@epam/uui-docs';
 import { TextInputProps } from '@epam/uui-components';
 import { TextInput, TextInputMods } from '@epam/uui';
 import {
@@ -28,8 +28,8 @@ const TextInputDoc = new DocBuilder<TextInputProps & TextInputMods>({ name: 'Tex
         ],
         type: 'string',
     })
-    .prop('onAccept', { examples: (ctx: PropSamplesCreationContext) => [ctx.getCallback('onAccept')] })
-    .prop('onCancel', { examples: (ctx: PropSamplesCreationContext) => [ctx.getCallback('onCancel')] })
+    .prop('onAccept', { examples: (ctx: IPropSamplesCreationContext) => [ctx.getCallback('onAccept')] })
+    .prop('onCancel', { examples: (ctx: IPropSamplesCreationContext) => [ctx.getCallback('onCancel')] })
     .prop('type', { examples: ['text', 'password'], type: 'string', defaultValue: 'text' })
     .withContexts(DefaultContext);
 

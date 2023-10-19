@@ -32,7 +32,7 @@ export const iconDoc = new DocBuilder<IHasIcon>({ name: 'Icon' }).prop('icon', {
 });
 
 export const iconWithInfoDoc = new DocBuilder<IHasIcon>({ name: 'Icon' }).prop('icon', {
-    renderEditor: (editable: any, examples, props) => <IconPicker icons={ examples } { ...editable } { ...props } enableInfo={ true } />,
+    renderEditor: (editable: any, examples) => <IconPicker icons={ examples } { ...editable } enableInfo={ true } />,
     examples: getIconList<Icon>(true).map((i) => ({ value: i as any })),
 });
 

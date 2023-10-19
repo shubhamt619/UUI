@@ -1,5 +1,6 @@
 /**
- * NOTE: Types in this file are shared with front-end and must be copied to "@epam/app" as-is
+ * NOTE: Types in this file are shared with front-end and must be copied as-is:
+ * From: uui-build/docsGen/types/sharedTypes.ts --> To: app/src/common/apiReference/sharedTypes.ts
  */
 //
 
@@ -22,7 +23,7 @@ export type TTypeSummary = {
     module: string;
     exported: boolean;
     src?: string;
-    comment?: string[];
+    comment?: TComment;
 };
 export type TTypeDetails = {
     kind: number;
@@ -30,12 +31,18 @@ export type TTypeDetails = {
     propsFromUnion?: boolean;
     props?: TTypeProp[];
 };
+export type TComment = {
+    raw: string[],
+    tags: Record<string, any> | undefined,
+};
 export type TTypeProp = {
     uid: number;
     name: string;
     typeValue: TTypeValue;
+    typeValueRef?: TTypeRef;
+    editor: TPropEditor;
     required: boolean;
-    comment?: string[];
+    comment?: TComment;
     from?: TTypeRef;
 };
 export type TType = {
@@ -43,3 +50,26 @@ export type TType = {
     details?: TTypeDetails;
 };
 export type TTypeRefMap = Record<TTypeRef, TType>;
+
+/**
+ * The options in this enum loosely resemble prop-types (https://www.npmjs.com/package/prop-types)
+ */
+export enum TPropEditorType {
+    string = 'string',
+    bool = 'bool',
+    number = 'number',
+    func = 'func',
+    oneOf = 'oneOf',
+    component = 'component'
+}
+export type TOneOfItemType = string | number | boolean | null | {
+    negative: boolean;
+    base10Value: string;
+};
+export type TPropEditor =
+    { type: TPropEditorType.string } |
+    { type: TPropEditorType.bool } |
+    { type: TPropEditorType.number } |
+    { type: TPropEditorType.func } |
+    { type: TPropEditorType.component } |
+    { type: TPropEditorType.oneOf, options: TOneOfItemType[] };

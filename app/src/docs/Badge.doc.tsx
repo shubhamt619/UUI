@@ -1,12 +1,25 @@
 import * as React from 'react';
 import {
-    EditableDocContent, DocExample, BaseDocsBlock, UUI4, UUI3, UUI, TDocsGenType,
+    EditableDocContent, DocExample, BaseDocsBlock, UUI4, UUI3, UUI,
 } from '../common';
+import { TDocConfig } from '../common/docs/docBuilderGen/types';
+import { DocBuilder } from '@epam/uui-docs';
+import * as uui from '@epam/uui';
 
 export class BadgeDoc extends BaseDocsBlock {
     title = 'Badge';
 
-    override getDocsGenType = (): TDocsGenType => ('@epam/uui:BadgeProps');
+    override config: TDocConfig = {
+        name: 'Button',
+        type: '@epam/uui:BadgeProps',
+        component: uui.Badge,
+        doc: (doc: DocBuilder<uui.BadgeProps>) => {
+            doc
+                .propMerge('size', { defaultValue: '36' })
+                .propMerge('fill', { defaultValue: 'solid' })
+                .propMerge('iconPosition', { defaultValue: 'left' });
+        },
+    };
 
     getPropsDocPath() {
         return {

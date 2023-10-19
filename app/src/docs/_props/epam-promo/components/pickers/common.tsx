@@ -1,7 +1,7 @@
 import {
     ArrayDataSource, LazyDataSource, AsyncDataSource, PickerBaseOptions,
 } from '@epam/uui-core';
-import { DocBuilder, PropSamplesCreationContext } from '@epam/uui-docs';
+import { DocBuilder, IPropSamplesCreationContext } from '@epam/uui-docs';
 import { demoData } from '@epam/uui-docs';
 
 const dataSourcesMap: any = {
@@ -15,7 +15,7 @@ const dataSourcesMap: any = {
     persons: null,
 };
 
-export const getDataSourceExamples = (ctx: PropSamplesCreationContext) => {
+export const getDataSourceExamples = (ctx: IPropSamplesCreationContext) => {
     dataSourcesMap.languages = dataSourcesMap.languages
         || new AsyncDataSource({
             api: () => ctx.demoApi.languages({}).then((r) => r.items),

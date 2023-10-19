@@ -1,10 +1,25 @@
 import * as React from 'react';
-import { BaseDocsBlock, EditableDocContent, DocExample, UUI4, UUI3, UUI, TDocsGenType } from '../common/docs';
+import { BaseDocsBlock, EditableDocContent, DocExample, UUI4, UUI3, UUI } from '../common/docs';
+import { TDocConfig } from '../common/docs/docBuilderGen/types';
+import * as uui from '@epam/uui';
+import { DocBuilder } from '@epam/uui-docs';
+import { getDataSourceExamples } from './_props/uui/components/pickers/common';
 
 export class PickerInputDoc extends BaseDocsBlock {
     title = 'Picker Input';
 
-    override getDocsGenType = (): TDocsGenType => ('@epam/uui:CompletePickerInputProps');
+    override config: TDocConfig = {
+        name: 'Button',
+        type: '@epam/uui:CompletePickerInputProps',
+        component: uui.PickerInput,
+        doc: (doc: DocBuilder<uui.CompletePickerInputProps<any, any>>) => {
+            doc
+                .propMerge('dataSource', {
+                    examples: getDataSourceExamples,
+                    renderEditor: undefined,
+                });
+        },
+    };
 
     getPropsDocPath() {
         return {
