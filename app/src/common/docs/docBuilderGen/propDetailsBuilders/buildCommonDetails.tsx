@@ -10,5 +10,9 @@ export const buildCommonDetails: TDetailsBuilder = (params) => {
     if (prop.required) {
         details.isRequired = true;
     }
+    const defaultValue = prop.comment?.tags?.['@default'];
+    if (typeof defaultValue !== 'undefined') {
+        details.defaultValue = defaultValue;
+    }
     return details;
 };

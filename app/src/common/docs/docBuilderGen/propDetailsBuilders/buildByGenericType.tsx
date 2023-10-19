@@ -8,10 +8,6 @@ const boolDetailsBuilder: TDetailsBuilder = (params) => {
     const editor = prop.editor;
     if (editor.type === TPropEditorType.bool) {
         const res: Partial<PropDoc<any, any>> = { examples: [{ value: true }, { value: false }] };
-        const defaultValue = prop.comment?.tags?.['@default'];
-        if (typeof defaultValue !== 'undefined') {
-            res.defaultValue = defaultValue;
-        }
         return res;
     }
     throw new Error('Unsupported type');
